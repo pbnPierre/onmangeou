@@ -6,18 +6,18 @@ var r = new XMLHttpRequest(),
              '&type=restaurant'+
              '&opennow';
 
-function getApiData(apiUrl, apiKey) {
-    var url = apiUrl + '&key=' + apiKey;
-    console.log(url);
+function getApiData(apiUrl) {
+    var apikey = document.getElementById('apikey').value,
+        keyword = document.getElementById('keyword').value;
+    var url = apiUrl + '&key=' + apikey + '&keyword=' + keyword;
     r.open("GET", url, true);
     r.onreadystatechange = function () {
         if (r.readyState != 4 || r.status != 200) return;
         var response = JSON.parse(r.responseText);
         displayResults(response.results);
         if (response.next_page_token) {
-            window.setTimeout(function() { getApiData(apiUrl = apiBase +'pagetoken='+response.next_page_token, apiKey)}, 2000);
+            window.setTimeout(function() { getApiData(apiUrl = apiBase +'pagetoken='+response.next_page_token)}, 2000);
         }
-        console.log(response);
     };
     r.send();
 }
@@ -38,6 +38,6 @@ function displayResults(results) {
 }
 
 document.getElementById('apikey').addEventListener('input', function (evt) {
-    getApiData(apiUrl, this.value);
+    getApiData(apiUrl);
 });
 
