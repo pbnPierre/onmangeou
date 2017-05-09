@@ -16,7 +16,7 @@ function getApiData(apiUrl) {
         var response = JSON.parse(r.responseText);
         displayResults(response.results);
         if (response.next_page_token) {
-            window.setTimeout(function() { getApiData(apiUrl = apiBase +'pagetoken='+response.next_page_token)}, 2000);
+            window.setTimeout(function() { getApiData(apiBase +'pagetoken='+response.next_page_token)}, 1000);
         }
     };
     r.send();
