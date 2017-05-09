@@ -37,7 +37,10 @@ function displayResults(results) {
     });
 }
 
-document.getElementById('apikey').addEventListener('input', function (evt) {
+function search() {
+    document.getElementById('results').innerHTML = '';
     getApiData(apiUrl);
-});
+}
+document.getElementById('apikey').addEventListener('input', search);
+document.getElementById('keyword').addEventListener('input', search);
 
