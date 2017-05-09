@@ -1,22 +1,24 @@
 var r = new XMLHttpRequest(),
-    apiBase = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?',
-    apiUrl = apiBase +
-             'location=48.844749,2.383247'+
-             '&radius=300'+
-             '&type=restaurant'+
-             '&opennow';
+    searchUrl = 'http://localhost:1337/search?location=48.844749,2.383247'
+;
 
-function getApiData(apiUrl) {
-    var apikey = document.getElementById('apikey').value,
-        keyword = document.getElementById('keyword').value;
-    var url = apiUrl + '&key=' + apikey + '&keyword=' + keyword;
-    r.open("GET", url, true);
+
+function getApiData(searchUrl) {
+    var keyword = document.getElementById('keyword').value;
+
+    r.open("GET", searchUrl, true);
     r.onreadystatechange = function () {
         if (r.readyState != 4 || r.status != 200) return;
+
         var response = JSON.parse(r.responseText);
-        displayResults(response.results);
-        if (response.next_page_token) {
-            window.setTimeout(function() { getApiData(apiBase +'pagetoken='+response.next_page_token)}, 1000);
+        if (response.result === 'ko') {
+            alert('Error. Reason: ' + response.result.reason);
+            return;
+        }
+
+        displayResults(response.data.results);
+        if (response.data.next_page_token) {
+            window.setTimeout(function() { getApiData(searchUrl +'&pagetoken='+response.data.next_page_token)}, 1000);
         }
     };
     r.send();
@@ -39,8 +41,7 @@ function displayResults(results) {
 
 function search() {
     document.getElementById('results').innerHTML = '';
-    getApiData(apiUrl);
+    getApiData(searchUrl);
 }
-document.getElementById('apikey').addEventListener('input', search);
 document.getElementById('keyword').addEventListener('input', search);
-
+document.getElementById('go').addEventListener('click', search);
