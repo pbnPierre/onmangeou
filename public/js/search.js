@@ -1,5 +1,6 @@
 var r = new XMLHttpRequest(),
-    searchUrl = 'http://localhost:1337/search?location=48.844749,2.383247'
+    searchUrl = 'http://localhost:1337/search?location=48.844749,2.383247',
+    imageUrl = 'http://localhost:1337/image'
 ;
 
 
@@ -25,18 +26,44 @@ function getApiData(searchUrl) {
 }
 
 function displayResults(results) {
-    var resultList = document.getElementById('results');
     results.forEach(function (result) {
-        var item = document.createElement('li');
-        html = '';
-        if (result.photos) {
-            //TODO Add photos with
-        }
-        html += result.name;
+        if (result.geometry && result.geometry.location) {
+            var location = result.geometry.location.lat+','+result.geometry.location.long;
 
-        item.innerHTML = html;
-        resultList.appendChild(item);
+            var request = new XMLHttpRequest();
+            request.open('GET', imageUrl + '?location=' + location, true);
+            request.onreadystatechange = function() {
+                if (request.readyState != 4 || request.status != 200) {
+                    addResult(result, null);
+                    return;
+                }
+
+                var response = JSON.parse(r.responseText);
+                if (response.result === 'ko') {
+                    alert('Error. Reason: ' + response.result.reason);
+                    return;
+                }
+
+                addResult(result, request.image)
+            };
+            request.send();
+        } else {
+            addResult(result, null);
+        }
     });
+}
+
+function addResult(result, image) {
+    var item = document.createElement('li');
+    var html = result.name;
+
+    if (image !== null) {
+        var image = document.createElement('img');
+        image.src = 'data:image/png;base64, ' + image;
+    }
+
+    item.innerHTML = html;
+    document.getElementById('results').appendChild(item);
 }
 
 function search() {
