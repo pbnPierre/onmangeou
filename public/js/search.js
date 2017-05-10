@@ -13,7 +13,7 @@ function getApiData(searchUrl) {
 
         var response = JSON.parse(r.responseText);
         if (response.result === 'ko') {
-            alert('Error. Reason: ' + response.result.reason);
+            alert('Error. Reason: ' + response.reason);
             return;
         }
 
@@ -28,23 +28,22 @@ function getApiData(searchUrl) {
 function displayResults(results) {
     results.forEach(function (result) {
         if (result.geometry && result.geometry.location) {
-            var location = result.geometry.location.lat+','+result.geometry.location.long;
+            var location = result.geometry.location.lat+','+result.geometry.location.lng;
 
             var request = new XMLHttpRequest();
             request.open('GET', imageUrl + '?location=' + location, true);
             request.onreadystatechange = function() {
                 if (request.readyState != 4 || request.status != 200) {
-                    addResult(result, null);
                     return;
                 }
 
-                var response = JSON.parse(r.responseText);
+                var response = JSON.parse(request.responseText);
                 if (response.result === 'ko') {
-                    alert('Error. Reason: ' + response.result.reason);
+                    alert('Error. Reason: ' + response.reason);
                     return;
                 }
 
-                addResult(result, request.image)
+                addResult(result, response.image)
             };
             request.send();
         } else {
@@ -53,16 +52,21 @@ function displayResults(results) {
     });
 }
 
-function addResult(result, image) {
+function addResult(result, imageData) {
     var item = document.createElement('li');
-    var html = result.name;
 
-    if (image !== null) {
+    var name = document.createElement('span');
+    name.innerHTML = result.name;
+    item.appendChild(name);
+
+    item.appendChild(document.createElement('br'));
+
+    if (imageData !== null) {
         var image = document.createElement('img');
-        image.src = 'data:image/png;base64, ' + image;
+        image.src = 'data:image/png;base64, ' + imageData;
+        item.appendChild(image)
     }
 
-    item.innerHTML = html;
     document.getElementById('results').appendChild(item);
 }
 
