@@ -53,7 +53,7 @@ app.get('/image', (req, res) => {
     }
 
     let params = {
-        size: '400x400',
+        size: '200x200',
         location: req.query.location,
         key: config.apis.streetview.key
     };
@@ -68,7 +68,6 @@ app.get('/image', (req, res) => {
         let rawData = Buffer.alloc(0);
         httpsRes.on('data', (chunk) => rawData = Buffer.concat([rawData, Buffer.from(chunk)]));
         httpsRes.on('end', () => {
-            console.log(rawData);
             res.json({result: 'ok', image: rawData.toString('base64')});
         });
     });
