@@ -5,8 +5,14 @@ module.exports = {
         host: 'localhost',
         port: 1337
     },
-    api: {
-        key: secret.api.key,
-        baseUrl: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
+    apis: {
+        place: {
+            key: secret.keys.place,
+            baseUrl: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
+        },
+        streetview: {
+            key: secret.keys.streetview,
+            baseUrl: 'https://maps.googleapis.com/maps/api/streetview'
+        }
     }
 };

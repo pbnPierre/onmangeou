@@ -1,5 +1,6 @@
 module.exports = {
-    api: {
-        key: 'XXXXXXXXXXXXXXXXXXXXXXXX'
+    keys: {
+        place: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+        streetview: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     }
 }

@@ -24,13 +24,13 @@ app.get('/search', (req, res) => {
         radius: req.query.radius || 300,
         type: req.query.type || 'restaurant',
         opennow: true,
-        key: config.api.key
+        key: config.apis.place.key
     };
     if (req.query.next_page_token) {
         params.next_page_token = req.query.next_page_token;
     }
 
-    const url = config.api.baseUrl + '?' + querystring.stringify(params);
+    const url = config.apis.place.baseUrl + '?' + querystring.stringify(params);
     https.get(url, (httpsRes) => {
         if (httpsRes.statusCode !== 200) {
             httpsRes.json({result: 'ko', reason: 'bad status code received from api'})
@@ -42,6 +42,34 @@ app.get('/search', (req, res) => {
         httpsRes.on('end', () => {
             const json = JSON.parse(rawData);
             res.json({result: 'ok', data: json});
+        });
+    });
+});
+
+app.get('/image', (req, res) => {
+    if (!req.query.location) {
+        res.json({result: 'ko', reason: 'missing [location] parameter'})
+        return;
+    }
+
+    let params = {
+        size: '400x400',
+        location: req.query.location,
+        key: config.apis.streetview.key
+    };
+
+    const url = config.apis.streetview.baseUrl + '?' + querystring.stringify(params);
+    https.get(url, (httpsRes) => {
+        if (httpsRes.statusCode !== 200) {
+            httpsRes.json({result: 'ko', reason: 'bad status code received from api'})
+            return;
+        }
+
+        let rawData = Buffer.alloc(0);
+        httpsRes.on('data', (chunk) => rawData = Buffer.concat([rawData, Buffer.from(chunk)]));
+        httpsRes.on('end', () => {
+            console.log(rawData);
+            res.json({result: 'ok', image: rawData.toString('base64')});
         });
     });
 });
