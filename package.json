@@ -1,0 +1,26 @@
+{
+  "name": "onmangeou",
+  "version": "0.0.1",
+  "description": "Find where to eat around you",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pbnPierre/onmangeou.git"
+  },
+  "keywords": [
+    "eat",
+    "restaurant"
+  ],
+  "author": "Junggle Media",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pbnPierre/onmangeou/issues"
+  },
+  "homepage": "https://github.com/pbnPierre/onmangeou#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
