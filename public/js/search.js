@@ -4,10 +4,10 @@ var r = new XMLHttpRequest(),
 ;
 
 
-function getApiData(searchUrl) {
+function getApiData(url) {
     var keyword = document.getElementById('keyword').value;
 
-    r.open("GET", searchUrl, true);
+    r.open("GET", url, true);
     r.onreadystatechange = function () {
         if (r.readyState != 4 || r.status != 200) return;
 

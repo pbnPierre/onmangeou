@@ -26,14 +26,14 @@ app.get('/search', (req, res) => {
         opennow: true,
         key: config.apis.place.key
     };
-    if (req.query.next_page_token) {
-        params.next_page_token = req.query.next_page_token;
+    if (req.query.pagetoken) {
+        params.pagetoken = req.query.pagetoken;
     }
 
     const url = config.apis.place.baseUrl + '?' + querystring.stringify(params);
     https.get(url, (httpsRes) => {
         if (httpsRes.statusCode !== 200) {
-            httpsRes.json({result: 'ko', reason: 'bad status code received from api'})
+            res.json({result: 'ko', reason: 'bad status code received from api'})
             return;
         }
 
@@ -61,7 +61,7 @@ app.get('/image', (req, res) => {
     const url = config.apis.streetview.baseUrl + '?' + querystring.stringify(params);
     https.get(url, (httpsRes) => {
         if (httpsRes.statusCode !== 200) {
-            httpsRes.json({result: 'ko', reason: 'bad status code received from api'})
+            res.json({result: 'ko', reason: 'bad status code received from api'})
             return;
         }
 
