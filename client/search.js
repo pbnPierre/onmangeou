@@ -83,5 +83,8 @@ function search() {
     document.getElementById('results').innerHTML = '';
     getApiData(searchUrl);
 }
-document.getElementById('keyword').addEventListener('input', search);
-document.getElementById('go').addEventListener('click', search);
+
+export function initialize() {
+    document.getElementById('keyword').addEventListener('input', search);
+    document.getElementById('go').addEventListener('click', search);
+}
