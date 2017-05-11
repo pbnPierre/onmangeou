@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,7 +73,7 @@
 "use strict";
 
 
-var _search = __webpack_require__(2);
+var _search = __webpack_require__(3);
 
 (0, _search.initialize)();
 
@@ -554,10 +554,39 @@ var _search = __webpack_require__(2);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _globalConfig = __webpack_require__(4);
+
+var _globalConfig2 = _interopRequireDefault(_globalConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    host: _globalConfig2.default.host,
+    port: _globalConfig2.default.port
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.initialize = initialize;
+
+var _config = __webpack_require__(2);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var r = new XMLHttpRequest(),
-    searchUrl = 'http://localhost:1337/search?location=48.844749,2.383247',
-    imageUrl = 'http://localhost:1337/image';
+    searchUrl = 'http://' + _config2.default.host + ':' + _config2.default.port + '/search?location=48.844749,2.383247',
+    imageUrl = 'http://' + _config2.default.host + ':' + _config2.default.port + '/image';
 
 function getApiData(url) {
     var keyword = document.getElementById('keyword').value;
@@ -646,7 +675,19 @@ function initialize() {
 }
 
 /***/ }),
-/* 3 */
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+    'host': 'localhost',
+    'port': 1337
+};
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);

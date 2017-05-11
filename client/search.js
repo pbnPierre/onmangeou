@@ -1,6 +1,9 @@
+import config from './config';
+
+
 var r = new XMLHttpRequest(),
-    searchUrl = 'http://localhost:1337/search?location=48.844749,2.383247',
-    imageUrl = 'http://localhost:1337/image'
+    searchUrl = 'http://' + config.host + ':' + config.port + '/search?location=48.844749,2.383247',
+    imageUrl = 'http://' + config.host + ':' + config.port + '/image'
 ;
 
 

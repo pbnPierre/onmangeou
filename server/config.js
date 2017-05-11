@@ -1,10 +1,10 @@
-const secret = require('./secret.js');
+const secret = require('./secret');
+const globalConfig = require('../global-config');
 
 module.exports = {
-    server: {
-        host: 'localhost',
-        port: 1337
-    },
+    host: globalConfig.host,
+    port: globalConfig.port,
+
     apis: {
         place: {
             key: secret.keys.place,

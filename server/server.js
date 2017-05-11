@@ -73,10 +73,10 @@ app.get('/image', (req, res) => {
     });
 });
 
-app.listen(config.server.port, config.server.host, (err) => {
+app.listen(config.port, config.host, (err) => {
     if (err) {
         return console.error(err);
     }
 
-    console.log('Listening at http://' + config.server.host + ':' + config.server.port);
+    console.log('Listening at http://' + config.host + ':' + config.port);
 });
