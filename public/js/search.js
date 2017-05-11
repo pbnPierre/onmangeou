@@ -53,20 +53,29 @@ function displayResults(results) {
 }
 
 function addResult(result, imageData) {
-    var item = document.createElement('li');
 
-    var name = document.createElement('span');
-    name.innerHTML = result.name;
-    item.appendChild(name);
+    var item = document.createElement('div');
+        item.classList.add('col-xs-6');
+        item.classList.add('col-md-3');
 
-    item.appendChild(document.createElement('br'));
+    var thumbnailcontainer = document.createElement('div');
+        thumbnailcontainer.className = 'thumbnail';
 
     if (imageData !== null) {
         var image = document.createElement('img');
         image.src = 'data:image/png;base64, ' + imageData;
-        item.appendChild(image)
+        thumbnailcontainer.appendChild(image)
     }
 
+    var name = document.createElement('h3');
+        name.innerHTML = result.name;
+    var nameParent = document.createElement('div');
+        nameParent.className='caption';
+
+
+    nameParent.appendChild(name);
+    thumbnailcontainer.appendChild(nameParent);
+    item.appendChild(thumbnailcontainer);
     document.getElementById('results').appendChild(item);
 }
 
