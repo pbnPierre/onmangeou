@@ -1,93 +1,52 @@
-import config from './config';
+function addResult(name, imageData) {
+    const item = document.createElement('div');
+    item.classList.add('col-xs-6');
+    item.classList.add('col-md-3');
 
-
-var r = new XMLHttpRequest(),
-    searchUrl = 'http://' + config.host + ':' + config.port + '/search?location=48.844749,2.383247',
-    imageUrl = 'http://' + config.host + ':' + config.port + '/image'
-;
-
-
-function getApiData(url) {
-    var keyword = document.getElementById('keyword').value;
-
-    r.open("GET", url, true);
-    r.onreadystatechange = function () {
-        if (r.readyState != 4 || r.status != 200) return;
-
-        var response = JSON.parse(r.responseText);
-        if (response.result === 'ko') {
-            alert('Error. Reason: ' + response.reason);
-            return;
-        }
-
-        displayResults(response.data.results);
-        if (response.data.next_page_token) {
-            window.setTimeout(function() { getApiData(searchUrl +'&pagetoken='+response.data.next_page_token)}, 1000);
-        }
-    };
-    r.send();
-}
-
-function displayResults(results) {
-    results.forEach(function (result) {
-        if (result.geometry && result.geometry.location) {
-            var location = result.geometry.location.lat+','+result.geometry.location.lng;
-
-            var request = new XMLHttpRequest();
-            request.open('GET', imageUrl + '?location=' + location, true);
-            request.onreadystatechange = function() {
-                if (request.readyState != 4 || request.status != 200) {
-                    return;
-                }
-
-                var response = JSON.parse(request.responseText);
-                if (response.result === 'ko') {
-                    alert('Error. Reason: ' + response.reason);
-                    return;
-                }
-
-                addResult(result, response.image)
-            };
-            request.send();
-        } else {
-            addResult(result, null);
-        }
-    });
-}
-
-function addResult(result, imageData) {
-
-    var item = document.createElement('div');
-        item.classList.add('col-xs-6');
-        item.classList.add('col-md-3');
-
-    var thumbnailcontainer = document.createElement('div');
-        thumbnailcontainer.className = 'thumbnail';
+    const thumbnailcontainer = document.createElement('div');
+    thumbnailcontainer.className = 'thumbnail';
 
     if (imageData !== null) {
-        var image = document.createElement('img');
+        const image = document.createElement('img');
         image.src = 'data:image/png;base64, ' + imageData;
-        thumbnailcontainer.appendChild(image)
+        thumbnailcontainer.appendChild(image);
     }
 
-    var name = document.createElement('h3');
-        name.innerHTML = result.name;
-    var nameParent = document.createElement('div');
-        nameParent.className='caption';
+    const nameTag = document.createElement('h3');
+    nameTag.innerHTML = name;
+    const nameParent = document.createElement('div');
+    nameParent.className = 'caption';
 
 
-    nameParent.appendChild(name);
+    nameParent.appendChild(nameTag);
     thumbnailcontainer.appendChild(nameParent);
     item.appendChild(thumbnailcontainer);
     document.getElementById('results').appendChild(item);
 }
 
-function search() {
-    document.getElementById('results').innerHTML = '';
-    getApiData(searchUrl);
+function search(location) {
+    fetch('/search?location=' + location, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    })
+    .then((response) => response.json())
+    .then((json) => {
+        if (json.result === 'ko') {
+            alert('Error. Reason: ' + json.reason);
+            return;
+        }
+
+        json.data.forEach((result) => addResult(result.name, result.image));
+    })
+    .catch((ex) => {
+        alert('Failed to retrieve data');
+        console.log(ex);
+    });
 }
 
 export function initialize() {
-    document.getElementById('keyword').addEventListener('input', search);
-    document.getElementById('go').addEventListener('click', search);
+    search('48.844749,2.383247');
 }
