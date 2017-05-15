@@ -28,12 +28,29 @@
         <div class="jumbotron">
             <div class="container">
                 <h1>Where do we eat ?</h1>
-                <div class="input-group">
-                    <input type="text"  id="keyword" class="form-control" placeholder="If you want specific restaurant">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" id="go" type="button">Go!</button>
-                    </span>
+                <input type="text" name="keyword" class="form-control" placeholder="If you want specific restaurant">
+                Opened now ?
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                        <input type="radio" name="open-now" id="1" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="0" autocomplete="off"> No
+                    </label>
                 </div>
+                How far ?
+                <div class="input-group">
+                    <div  class="form-control">
+                        <input class="range range-primary" type="range" name="distance" min="50" max="500" value="200" onchange="distancePrimary.value=value">
+                    </div>
+                    <div class="input-group-addon"><output id="distancePrimary">200</output>m</div>
+                </div>
+                <button type="button" class="btn btn-default" id="choose">
+                    <span class="glyphicon glyphicon-random" aria-hidden="true"></span> Choose for me
+                </button>
+                <button type="button" class="btn btn-default" id="search">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> search
+                </button>
             </div>
         </div>
 
@@ -46,7 +63,7 @@
         </div> <!-- /container -->
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" crossorigin="anonymous"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script src="./js/client.js" type="text/javascript"></script>
