@@ -1,4 +1,4 @@
-function formatResult(name, imageData) {
+function addResult(name, imageData) {
     const item = document.createElement('div');
     item.classList.add('col-xs-6');
     item.classList.add('col-md-3');
@@ -26,7 +26,6 @@ function formatResult(name, imageData) {
 
 
 function search(location) {
-    console.log(location);
     fetch('/search?location=' + location, {
         method: 'GET',
         headers: {
