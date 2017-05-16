@@ -21,12 +21,24 @@ function addResult(name, imageData) {
     nameParent.appendChild(nameTag);
     thumbnailcontainer.appendChild(nameParent);
     item.appendChild(thumbnailcontainer);
+    document.getElementById('results').appendChild(item);
 }
 
 
 
 function search(location) {
-    fetch('/search?location=' + location, {
+    var uri = '/search?location=' + location;
+
+    uri += '&radius='+document.querySelector('[name="range"]').value;
+
+    if (document.querySelector('[name="open-now"]').value == 'on') {
+        uri += '&opennow';
+    };
+    var keyword = document.querySelector('[name="keyword"]').value;
+    if (keyword !== '') {
+        uri += '&keyword='+ keyword;
+    };
+    fetch(uri, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -40,8 +52,9 @@ function search(location) {
             return;
         }
 
+        document.getElementById('results').innerHTML = '';
+
         json.data.forEach((result) => addResult(result.name, result.image));
-        alert('On va manger à ' + json.data[Math.random()*json.data.length].name);
     })
     .catch((ex) => {
         alert('Failed to retrieve data');
@@ -50,7 +63,23 @@ function search(location) {
 }
 
 export function initialize() {
+    $('#search').on('click', function(event) {
+        location(search);
+    });
+    $('#choose').on('click', function(event) {
+        chooseRandomly();
+    });
     location(search);
+}
+
+function chooseRandomly() {
+    var results = document.getElementById('results').childNodes;
+    if (results.length > 0) {
+        var element = results[Math.floor(Math.random()*results.length)];
+        var randomResultDiv = document.getElementById('random-result');
+        randomResultDiv.innerHTML = '';
+        randomResultDiv.appendChild(element.cloneNode(true));
+    }
 }
 
 function location(callback) {
